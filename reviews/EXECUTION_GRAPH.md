@@ -1,42 +1,42 @@
 # TelemetryHealth Complete Execution Graph
 
 Date: 2026-07-17
-Scope: Every executable under `control-plane/cmd/`, plus `processor/`, `tools/docs-bot/`, and `dashboard/`.
+Scope: Every executable under `control-plane/cmd/`, plus `processor/`, and `dashboard/`.
 Method: Source-traced actual `import` chains, constructor calls, and runtime invocations — no assumptions.
 
 ---
 
 ## Master Subsystem Reachability Matrix
 
-| Subsystem | api-server | ingest-gateway | worker | init-db | seeder | simulator | e2e-test | dashboard | processor | docs-bot |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| `internal/api/rest` | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/ingest` | — | ✅ | — | — | — | — | — | — | — | — |
-| `internal/kafka` (Producer) | — | ✅ | — | — | — | — | — | — | — | — |
-| `internal/kafka` (WorkerSet) | — | — | ✅ | — | — | — | — | — | — | — |
-| `internal/kafka` (EnsureTopics) | — | ✅ | ✅ | — | — | — | — | — | — | — |
-| `internal/storage/clickhouse` (Client) | ✅ | — | ✅ | — | — | — | — | — | — | — |
-| `internal/storage/clickhouse` (Schema) | — | — | — | ✅ | — | — | — | — | — | — |
-| `internal/storage/clickhouse` (HealthRepo) | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/storage/clickhouse` (ReplayRepo) | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/authz` | ✅ | ✅ | — | — | — | — | — | — | — | — |
-| `internal/telemetry` (Prometheus) | ✅ | ✅ | ✅ | — | — | — | — | — | — | — |
-| `internal/telemetry` (OTel SDK) | ✅ | ✅ | ✅ | — | — | — | — | — | — | — |
-| `internal/telemetry` (HealthScore) | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/remediation` | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/engine` (Graph) | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/behavior` | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/decision` | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/rootcause` | ✅ | — | — | — | — | — | — | — | — | — |
-| `internal/simulator` | ✅ | — | — | — | — | ✅ | — | — | — | — |
-| `internal/mcp` (DTOs only) | ✅† | — | — | — | — | — | — | — | — | — |
-| `pkg/models` | ✅ | — | — | — | — | — | — | — | — | — |
-| `dashboard` (React) | — | — | — | — | — | — | — | ✅ | — | — |
-| **`internal/alerting`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
-| **`internal/streaming`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
-| **`internal/mcp` (Server/Tools)** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
-| **`internal/mcp` (Client)** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
-| **`processor/`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔‡ | ⛔ |
+| Subsystem | api-server | ingest-gateway | worker | init-db | seeder | simulator | e2e-test | dashboard | processor |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| `internal/api/rest` | ✅ | — | — | — | — | — | — | — | — |
+| `internal/ingest` | — | ✅ | — | — | — | — | — | — | — |
+| `internal/kafka` (Producer) | — | ✅ | — | — | — | — | — | — | — |
+| `internal/kafka` (WorkerSet) | — | — | ✅ | — | — | — | — | — | — |
+| `internal/kafka` (EnsureTopics) | — | ✅ | ✅ | — | — | — | — | — | — |
+| `internal/storage/clickhouse` (Client) | ✅ | — | ✅ | — | — | — | — | — | — |
+| `internal/storage/clickhouse` (Schema) | — | — | — | ✅ | — | — | — | — | — |
+| `internal/storage/clickhouse` (HealthRepo) | ✅ | — | — | — | — | — | — | — | — |
+| `internal/storage/clickhouse` (ReplayRepo) | ✅ | — | — | — | — | — | — | — | — |
+| `internal/authz` | ✅ | ✅ | — | — | — | — | — | — | — |
+| `internal/telemetry` (Prometheus) | ✅ | ✅ | ✅ | — | — | — | — | — | — |
+| `internal/telemetry` (OTel SDK) | ✅ | ✅ | ✅ | — | — | — | — | — | — |
+| `internal/telemetry` (HealthScore) | ✅ | — | — | — | — | — | — | — | — |
+| `internal/remediation` | ✅ | — | — | — | — | — | — | — | — |
+| `internal/engine` (Graph) | ✅ | — | — | — | — | — | — | — | — |
+| `internal/behavior` | ✅ | — | — | — | — | — | — | — | — |
+| `internal/decision` | ✅ | — | — | — | — | — | — | — | — |
+| `internal/rootcause` | ✅ | — | — | — | — | — | — | — | — |
+| `internal/simulator` | ✅ | — | — | — | — | ✅ | — | — | — |
+| `internal/mcp` (DTOs only) | ✅† | — | — | — | — | — | — | — | — |
+| `pkg/models` | ✅ | — | — | — | — | — | — | — | — |
+| `dashboard` (React) | — | — | — | — | — | — | — | ✅ | — |
+| **`internal/alerting`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
+| **`internal/streaming`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
+| **`internal/mcp` (Server/Tools)** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
+| **`internal/mcp` (Client)** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ |
+| **`processor/`** | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔ | ⛔‡ |
 
 > ✅ = reached  — = not applicable  ⛔ = **NEVER REACHED**
 > † = `mcp.HealthResponse` DTO imported but `mcp.NewServer`/`HandleToolCall` never called
@@ -390,23 +390,6 @@ processor.NewFactory()
 ```
 
 Has working unit tests (`cardinality/`, `failopen/`, `tracechain/`, `coverage/`) but is a library-only module.
-
----
-
-## Standalone Tool: `tools/docs-bot/`
-
-> [main.go](file:///c:/Users/sunanda.AMFIIND/Desktop/SHUBHAM%20PROJECT/TelemetryHealth_/tools/docs-bot/main.go)
-
-Separate Go module (`go.mod`). Contains `changelog.go`, `commitlog.go`, `status.go`. Has tests.
-
-```
-docs-bot main()
-    ↓
-    Standalone CLI tool for documentation generation.
-    Does NOT import control-plane packages.
-    Does NOT connect to Kafka, ClickHouse, or the dashboard.
-    Isolated utility.
-```
 
 ---
 
