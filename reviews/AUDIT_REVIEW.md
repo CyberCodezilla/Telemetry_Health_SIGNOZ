@@ -38,14 +38,13 @@ Feature completion should be scored as "partial" for most architecture claims, n
 
 ## 1. Build Verification
 
-### Finding 1.1 - Control plane, dashboard, docs-bot build/test pass in basic mode
+### Finding 1.1 - Control plane and dashboard build/test pass in basic mode
 
 - Severity: Low
-- File: `control-plane/`, `dashboard/`, `tools/docs-bot/`
+- File: `control-plane/`, `dashboard/`
 - Evidence:
   - `cd control-plane && go test ./...` passed.
   - `cd dashboard && npm run build` passed and produced Vite output.
-  - `cd tools/docs-bot && go test ./...` passed.
 - Root Cause: The baseline build is reasonably maintained.
 - Suggested Fix: Keep these commands in CI and add integration tests for ClickHouse/Kafka paths.
 
