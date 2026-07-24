@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"syscall"
 	"time"
 
+	_ "github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/frag2win/TelemetryHealth/control-plane/internal/authz"
 	"github.com/frag2win/TelemetryHealth/control-plane/internal/alerting"
 	"github.com/frag2win/TelemetryHealth/control-plane/internal/api/rest"
@@ -48,7 +50,6 @@ func main() {
 	// Attempt ClickHouse connection (optional — graceful fallback to mock if unavailable)
 	var healthRepo storage.HealthRepository
 	var replayRepo engine.ReplayRepository
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	chHost := os.Getenv("CH_HOST")
 	if chHost == "" {
 		chHost = "127.0.0.1"
@@ -59,6 +60,32 @@ func main() {
 	}
 	chAddr := chHost + ":" + chPort
 
+	maxRetries := 1
+	if os.Getenv("CH_HOST") != "" {
+		maxRetries = 5
+	}
+	for i := 0; i < maxRetries; i++ {
+		db, sqlErr := sql.Open("clickhouse", "clickhouse://"+chHost+":"+chPort+"?dial_timeout=5s")
+		if sqlErr == nil {
+			if pingErr := db.Ping(); pingErr == nil {
+				schema := ch.NewSchema(db, logger)
+				if initErr := schema.InitSchema(); initErr != nil {
+					logger.Warn("Schema initialization warning", zap.Error(initErr))
+				} else {
+					logger.Info("ClickHouse DDL schema initialized successfully")
+				}
+				db.Close()
+				break
+			}
+			db.Close()
+		}
+		if i < maxRetries-1 {
+			logger.Info("Waiting for ClickHouse to be ready...", zap.Error(err))
+			time.Sleep(2 * time.Second)
+		}
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	client, err := ch.NewClient(
 		ctx,
 		[]string{chAddr},
@@ -66,6 +93,7 @@ func main() {
 		logger,
 	)
 	cancel()
+
 	if err != nil {
 		logger.Warn("ClickHouse unavailable, using mock data", zap.Error(err))
 		mockRepo := mock.NewRepository()

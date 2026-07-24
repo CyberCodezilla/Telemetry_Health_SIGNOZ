@@ -492,7 +492,12 @@ function App() {
                 <ErrorBoundary local>
                   {/* IMPL-2: Show AlertFiredBanner when health score < 50 */}
                   <AlertFiredBanner healthScore={data.healthScore} tenantId={selectedTenantId} />
-                  <Overview data={data} setView={setActiveView} tenantId={selectedTenantId} />
+                  <Overview
+                    data={data}
+                    setView={setActiveView}
+                    tenantId={selectedTenantId}
+                    onAnalysisComplete={fetchWithAbort}
+                  />
                 </ErrorBoundary>
               )}
               {activeView === 'cardinality' && (

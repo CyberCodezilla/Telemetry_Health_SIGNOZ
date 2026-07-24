@@ -134,11 +134,13 @@ func (b *SigNozBridge) FireAlert(ctx context.Context, payload AlertPayload) erro
 
 	resp, err := b.httpClient.Do(req)
 	if err != nil {
+		b.lastFired[payload.AlertID] = now
 		return fmt.Errorf("signoz alertmanager: send alert request: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusAccepted {
+		b.lastFired[payload.AlertID] = now
 		return fmt.Errorf("signoz alertmanager: unexpected response status %d", resp.StatusCode)
 	}
 
