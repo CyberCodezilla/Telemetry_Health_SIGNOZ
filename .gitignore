@@ -39,3 +39,18 @@ dashboard/.env.production.local
 .docker/
 docker-compose.override.yml
 .gocache/
+
+# Binaries
+*.exe
+*.pem
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+
+# Build outputs
+dashboard/dist/
+
+# Lock files
