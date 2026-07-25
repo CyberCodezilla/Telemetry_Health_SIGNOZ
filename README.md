@@ -41,11 +41,11 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 **Three-word summary: Detect → Score → Heal.**
 
----
+## 🏗 Architecture
 
 <div align="center">
 
-![TelemetryHealth Architecture Diagram](./architecture.png)
+<img src="./architecture.png" alt="TelemetryHealth Architecture Diagram" width="750" />
 
 </div>
 
