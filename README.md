@@ -21,6 +21,29 @@
 
 ---
 
+## <img src="https://api.iconify.design/lucide:list.svg?color=%2300add8" width="26" height="26" /> Table of Contents
+
+- [The Problem](#the-problem)
+- [Solution Overview](#solution-overview)
+- [Architecture](#architecture)
+- [Key Features](#key-features)
+- [SigNoz MCP Server Integration](#signoz-mcp-server-integration)
+- [SigNoz Deep Integration](#signoz-deep-integration)
+- [Dashboard Views](#dashboard-views)
+- [Repository Structure](#repository-structure)
+- [Getting Started](#getting-started)
+- [API Reference](#api-reference)
+- [Security Model](#security-model)
+- [Test Coverage](#test-coverage)
+- [Custom OTel Metrics Emitted](#custom-otel-metrics-emitted)
+- [AI Agent Observability](#ai-agent-observability)
+- [CI/CD](#cicd)
+- [Roadmap](#roadmap)
+- [Tech Stack](#tech-stack)
+- [License](#license)
+
+---
+
 ## <img src="https://api.iconify.design/lucide:alert-triangle.svg?color=%23f95738" width="26" height="26" /> The Problem
 
 You spend weeks setting up OpenTelemetry. You deploy SigNoz. You breathe easy.
