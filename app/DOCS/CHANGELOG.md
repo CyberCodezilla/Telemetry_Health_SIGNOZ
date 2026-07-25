@@ -28,6 +28,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Add MIT LICENSE file to fix 404 link in README ([533e429](https://github.com/frag2win/TelemetryHealth/commit/533e429b7f193652c43fc5c97120c8fa3be10cfa))
+
 - Complete rewrite of dashboard implementing useTenantData hook, AbortController, proxy relative paths, and resolving all audit bugs ([2a0259b](https://github.com/frag2win/TelemetryHealth/commit/2a0259b2ae061a26151a9947761737108ec2a435))
 
 ### Internal
@@ -35,5 +37,3 @@ All notable changes to this project will be documented in this file.
 - Remove outdated PRD and fixes checklist ([23c1a36](https://github.com/frag2win/TelemetryHealth/commit/23c1a36d5703fb7c5261ffc56f2362da6a8275c6))
 
 - Remove committed .exe binaries and add .gitignore ([7c222e3](https://github.com/frag2win/TelemetryHealth/commit/7c222e38c2d36789575a94bfbca3dbbd82b740f8))
-
-- Fix github actions permissions for docs-bot ([9f64431](https://github.com/frag2win/TelemetryHealth/commit/9f64431ffbef197b19f8363510c1dd43a268d9ed))

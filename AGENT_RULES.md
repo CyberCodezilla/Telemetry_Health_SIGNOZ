@@ -1,10 +1,10 @@
 # AI Agent Guidelines & Documentation Rules
 
-This file defines the conventions for development, commits, and automated documentation updates for the **TelemetryHealth** project. It lives at repo root so AI agents and humans can find it without being told where to look. See `app/DOCS/TelemetryHealth_PRD.md` §14–§15 for the full rationale behind these rules.
+This file defines the conventions for development, commits, and documentation updates for the **TelemetryHealth** project. It lives at repo root so AI agents and humans can find it without being told where to look. See `app/DOCS/TelemetryHealth_PRD.md` §14 for the full rationale behind these rules.
 
 ## 1. Commit Message Conventions
 
-All commits must follow these prefixes to ensure the automated documentation bot can categorize changes correctly:
+All commits must follow these prefixes to ensure clear commit categorization:
 
 - `FEATURE: {description}` - New features or capabilities.
 - `BUG: {description}` - Fixes for bugs or build errors.
@@ -20,7 +20,7 @@ Commits are rejected by CI's commit-lint step if they don't match `^(FEATURE|BUG
 
 **Blast-radius exception**: any non-`TEST` commit touching `processor/` or `control-plane/internal/remediation/` must reference the relevant PRD risk (e.g. `Risk: §12 row 1`) in the commit body — these are the two packages that can directly affect a customer's live telemetry pipeline.
 
-**Linking to the PRD**: a commit may include a trailer `Closes-PRD-Section: §X.Y` to signal that a functional requirement is now complete. The docs bot uses this to update `Implementation_Status.md` automatically (see §3 below).
+**Linking to the PRD**: a commit may include a trailer `Closes-PRD-Section: §X.Y` to signal that a functional requirement is now complete.
 
 ## 2. Documentation Updates & AI Agent Behavior
 
@@ -37,7 +37,6 @@ When an AI Agent is working on this project, it must:
         - `TEST`, `CHORE` map to `### Internal`
     - **Build_Issue_Report.md**: Specifically for `BUG` commits that relate to compilation, CI config, `Dockerfile`, `go.mod`/`go.sum`, or Helm/Terraform (runtime environment) issues.
     - **Implementation_Status.md**: Updated when a feature mentioned in the PRD is moved to completion — in the same commit that completes it, not a later cleanup pass.
-    - **commit-log/YYYY-MM-DD.md**: An append-only, per-day audit log of every commit that passed CI on `main` (SHA, author, category, description, PR number, CI run link). Never edited or rewritten after creation.
 
 ---
-*Note: This file is the primary source of truth for AI agent behavior in this project. Full context and rationale: `app/DOCS/TelemetryHealth_PRD.md` §14.*
+*Note: This file is the primary source of truth for AI agent behavior in this project.*
