@@ -375,7 +375,7 @@ TelemetryHealth emits the following custom metrics into SigNoz:
 
 ---
 
-## <img src="https://api.iconify.design/lucide:brain.svg?color=%23a855f7" width="26" height="26" /> AI Agent Observability (Hackathon Theme)
+## <img src="https://api.iconify.design/lucide:brain.svg?color=%23a855f7" width="26" height="26" /> AI Agent Observability 
 
 TelemetryHealth was purpose-built for the **SigNoz Agents of Observability Hackathon**. It provides first-class observability for AI agent workflows instrumented with OpenTelemetry:
 
