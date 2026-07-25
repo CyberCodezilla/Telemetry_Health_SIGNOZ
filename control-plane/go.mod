@@ -1,6 +1,6 @@
 module github.com/frag2win/TelemetryHealth/control-plane
 
-go 1.26.3
+go 1.22
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.47.0
