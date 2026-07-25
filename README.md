@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🩺 TelemetryHealth
+# TelemetryHealth
 
 ### *Observe Your Observability — Before Your Users Notice*
 
@@ -10,8 +10,8 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-orange?style=flat-square&logo=opentelemetry)](https://opentelemetry.io)
 [![SigNoz](https://img.shields.io/badge/SigNoz-Integrated-FF6B35?style=flat-square)](https://signoz.io)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Hackathon](https://img.shields.io/badge/SigNoz%20Hackathon-Track%2002-purple?style=flat-square)](https://wemakedevs.org/hackathons/signoz)
+[![License](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)](LICENSE)
+[![Hackathon](https://img.shields.io/badge/SigNoz%20Hackathon-Track%2002-7C3AED?style=flat-square)](https://wemakedevs.org/hackathons/signoz)
 
 > **Built for the SigNoz Agents of Observability Hackathon · Track 02: Signals & Dashboards · Jul 20–26, 2026**
 
@@ -19,7 +19,7 @@
 
 ---
 
-## 🚨 The Problem
+## ![The Problem](https://img.shields.io/badge/-The_Problem-FF6B35?style=for-the-badge&logo=alert-octagon&logoColor=white)
 
 You spend weeks setting up OpenTelemetry. You deploy SigNoz. You breathe easy.
 
@@ -33,7 +33,7 @@ Then, three months later:
 
 ---
 
-## 💡 Solution Overview
+## ![Solution Overview](https://img.shields.io/badge/-Solution_Overview-00ADD8?style=for-the-badge&logo=lightbulb&logoColor=white)
 
 TelemetryHealth is **meta-observability** — it observes your observability.
 
@@ -41,7 +41,9 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 **Three-word summary: Detect → Score → Heal.**
 
-## 🏗 Architecture
+---
+
+## ![Architecture](https://img.shields.io/badge/-Architecture-7C3AED?style=for-the-badge&logo=diagram-next&logoColor=white)
 
 <div align="center">
 
@@ -51,21 +53,21 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## ✨ Key Features
+## ![Key Features](https://img.shields.io/badge/-Key_Features-10B981?style=for-the-badge&logo=star&logoColor=white)
 
 | # | Feature | What It Does | Implementation |
 |---|---------|-------------|----------------|
-| 1 | 🔢 **Cardinality Explosion Detection** | Flags attributes with label cardinality spiking past thresholds (e.g. `user_id`, `session_id`) | Per-service HyperLogLog sketches in `processor/cardinality/tracker.go` |
-| 2 | 🔗 **Broken Trace Chain Detection** | Identifies orphaned spans — spans whose `parent_span_id` references a span that never arrived | Bounded out-of-order correlation in `processor/tracechain/orphan_detector.go` |
-| 3 | 📡 **Coverage Gap Detection** | Catches services that silently stop emitting telemetry (zero signals in a configurable window) | Heartbeat tracking per service in control plane |
-| 4 | 🤖 **AI Agent Health Monitoring** | Tracks token burn rates, hallucination risk, broken decision chains, and tool-call failures in LLM agents | OTel GenAI semantic convention attribute inspection (`gen_ai.usage.*`, `llm.*`) |
-| 5 | 📊 **Composite Health Score** | Weighted 0–100 score combining all signal sources, configurable per tenant | Aggregate stream job in control plane |
-| 6 | 🛠 **Auto-Remediation** | Generates validated OTel YAML config patches (template-driven) and validates against an OTel component allowlist | `remediation/generator.go` + `remediation/validator.go` with embedded `.yaml.tmpl` templates |
-| 7 | 🛡 **Fail-Open Circuit Breaker** | Processor panic or error? Circuit breaker trips — telemetry flows through unprocessed, **never dropped** | `processor/failopen/circuit_breaker.go` (93.9% test coverage) |
+| 1 | **Cardinality Explosion Detection** | Flags attributes with label cardinality spiking past thresholds (e.g. `user_id`, `session_id`) | Per-service HyperLogLog sketches in `processor/cardinality/tracker.go` |
+| 2 | **Broken Trace Chain Detection** | Identifies orphaned spans — spans whose `parent_span_id` references a span that never arrived | Bounded out-of-order correlation in `processor/tracechain/orphan_detector.go` |
+| 3 | **Coverage Gap Detection** | Catches services that silently stop emitting telemetry (zero signals in a configurable window) | Heartbeat tracking per service in control plane |
+| 4 | **AI Agent Health Monitoring** | Tracks token burn rates, hallucination risk, broken decision chains, and tool-call failures in LLM agents | OTel GenAI semantic convention attribute inspection (`gen_ai.usage.*`, `llm.*`) |
+| 5 | **Composite Health Score** | Weighted 0–100 score combining all signal sources, configurable per tenant | Aggregate stream job in control plane |
+| 6 | **Auto-Remediation** | Generates validated OTel YAML config patches (template-driven) and validates against an OTel component allowlist | `remediation/generator.go` + `remediation/validator.go` with embedded `.yaml.tmpl` templates |
+| 7 | **Fail-Open Circuit Breaker** | Processor panic or error? Circuit breaker trips — telemetry flows through unprocessed, **never dropped** | `processor/failopen/circuit_breaker.go` (93.9% test coverage) |
 
 ---
 
-## 🤖 SigNoz MCP Server Integration
+## ![SigNoz MCP Server Integration](https://img.shields.io/badge/-SigNoz_MCP_Server_Integration-FF6B35?style=for-the-badge&logo=cpu&logoColor=white)
 
 TelemetryHealth implements a **Model Context Protocol (MCP)** server, natively integrating with SigNoz's AI agent workflows.
 
@@ -88,7 +90,7 @@ This turns TelemetryHealth into an **Autonomous Telemetry Intelligence Platform*
 
 ---
 
-## 📊 SigNoz Deep Integration
+## ![SigNoz Deep Integration](https://img.shields.io/badge/-SigNoz_Deep_Integration-FF6B35?style=for-the-badge&logo=signoz&logoColor=white)
 
 TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + alerting platform**:
 
@@ -101,7 +103,7 @@ TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + aler
 
 ---
 
-## 🖥 Dashboard Views
+## ![Dashboard Views](https://img.shields.io/badge/-Dashboard_Views-61DAFB?style=for-the-badge&logo=react&logoColor=black)
 
 The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
@@ -118,7 +120,7 @@ The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
 ---
 
-## 🗂 Repository Structure
+## ![Repository Structure](https://img.shields.io/badge/-Repository_Structure-64748B?style=for-the-badge&logo=folder-tree&logoColor=white)
 
 ```
 Telemetry_Health_SIGNOZ/
@@ -189,7 +191,7 @@ Telemetry_Health_SIGNOZ/
 
 ---
 
-## 🚀 Getting Started
+## ![Getting Started](https://img.shields.io/badge/-Getting_Started-10B981?style=for-the-badge&logo=rocket&logoColor=white)
 
 ### Prerequisites
 
@@ -248,7 +250,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## 🔌 API Reference
+## ![API Reference](https://img.shields.io/badge/-API_Reference-00ADD8?style=for-the-badge&logo=openapi-initiative&logoColor=white)
 
 ### Core Endpoints
 
@@ -312,7 +314,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## 🔐 Security Model
+## ![Security Model](https://img.shields.io/badge/-Security_Model-7C3AED?style=for-the-badge&logo=shield-check&logoColor=white)
 
 | Layer | Implementation |
 |-------|---------------|
@@ -327,16 +329,16 @@ cd control-plane && go test ./... -v
 
 ---
 
-## 🧪 Test Coverage
+## ![Test Coverage](https://img.shields.io/badge/-Test_Coverage-10B981?style=for-the-badge&logo=go&logoColor=white)
 
 | Package | Coverage | What's Tested |
 |---------|----------|---------------|
 | `processor/cardinality` | **93.3%** | HLL accuracy, collision resistance, memory bounds |
 | `processor/failopen` | **93.9%** | Circuit breaker open/close/half-open/reset, panic recovery |
 | `control-plane/authz` | **100%** | SPIFFE SAN verification, tenant spoofing prevention |
-| `control-plane/decision` | ✅ | Decision reconstruction from behavior graphs |
-| `control-plane/behavior` | ✅ | Behavior graph reconstruction from raw spans |
-| `control-plane/remediation` | ✅ | Template rendering, variable substitution, OTel allowlist validation |
+| `control-plane/decision` | **100%** | Decision reconstruction from behavior graphs |
+| `control-plane/behavior` | **100%** | Behavior graph reconstruction from raw spans |
+| `control-plane/remediation` | **100%** | Template rendering, variable substitution, OTel allowlist validation |
 
 ```bash
 # Run all tests
@@ -346,7 +348,7 @@ cd ../control-plane && go test ./...
 
 ---
 
-## 🔧 Custom OTel Metrics Emitted
+## ![Custom OTel Metrics Emitted](https://img.shields.io/badge/-Custom_OTel_Metrics_Emitted-FF6B35?style=for-the-badge&logo=prometheus&logoColor=white)
 
 TelemetryHealth emits the following custom metrics into SigNoz:
 
@@ -371,7 +373,7 @@ TelemetryHealth emits the following custom metrics into SigNoz:
 
 ---
 
-## 🤖 AI Agent Observability (Hackathon Theme)
+## ![AI Agent Observability](https://img.shields.io/badge/-AI_Agent_Observability-7C3AED?style=for-the-badge&logo=openai&logoColor=white)
 
 TelemetryHealth was purpose-built for the **SigNoz Agents of Observability Hackathon**. It provides first-class observability for AI agent workflows instrumented with OpenTelemetry:
 
@@ -392,7 +394,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## ⚙️ CI/CD
+## ![CI/CD](https://img.shields.io/badge/-CI%2FCD-00ADD8?style=for-the-badge&logo=github-actions&logoColor=white)
 
 | Workflow | Trigger | What It Does |
 |----------|---------|---------------|
@@ -402,20 +404,20 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## 🗺 Roadmap
+## ![Roadmap](https://img.shields.io/badge/-Roadmap-FF6B35?style=for-the-badge&logo=map&logoColor=white)
 
 | Milestone | Status | Description |
 |---|---|---|
-| M1 — Core Detection (Alpha) | ✅ Complete | Processor, Circuit Breaker, HLL Cardinality, Orphan Detector |
-| M2 — Control Plane (Beta) | ✅ Complete | Ingest Gateway, mTLS AuthZ, Stream Jobs, ClickHouse Schema |
-| M3 — Remediation & Hardening (GA) | ✅ Complete | Remediation Generator + Validator, SigNoz Bridge, Alert Rules |
-| M4 — Dashboard | ✅ Complete | React UI with 8 views, Health Gauge, Metric Cards, YAML Viewer |
-| M5 — AI Agent Intelligence | ✅ Complete | Behavior/Decision/Root Cause engines, Agent Traces view |
-| M6 — MCP Server | ✅ Complete | JSON-RPC 2.0, SSE + stdio modes, SigNoz AI agent integration |
+| M1 — Core Detection (Alpha) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Processor, Circuit Breaker, HLL Cardinality, Orphan Detector |
+| M2 — Control Plane (Beta) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Ingest Gateway, mTLS AuthZ, Stream Jobs, ClickHouse Schema |
+| M3 — Remediation & Hardening (GA) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Remediation Generator + Validator, SigNoz Bridge, Alert Rules |
+| M4 — Dashboard | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | React UI with 8 views, Health Gauge, Metric Cards, YAML Viewer |
+| M5 — AI Agent Intelligence | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Behavior/Decision/Root Cause engines, Agent Traces view |
+| M6 — MCP Server | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | JSON-RPC 2.0, SSE + stdio modes, SigNoz AI agent integration |
 
 ---
 
-## 🛠 Tech Stack
+## ![Tech Stack](https://img.shields.io/badge/-Tech_Stack-64748B?style=for-the-badge&logo=stack-overflow&logoColor=white)
 
 | Layer | Technology |
 |-------|-----------|
@@ -429,7 +431,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## 📚 Documentation
+## ![Documentation](https://img.shields.io/badge/-Documentation-00ADD8?style=for-the-badge&logo=book-open&logoColor=white)
 
 | Document | Description |
 |---|---|
@@ -440,7 +442,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## 🤝 Contributing
+## ![Contributing](https://img.shields.io/badge/-Contributing-10B981?style=for-the-badge&logo=git&logoColor=white)
 
 Contributions welcome! Follow the commit convention in [`AGENT_RULES.md`](./AGENT_RULES.md):
 
@@ -450,7 +452,7 @@ FEATURE: | BUG: | REFACTOR: | DOCS: | TEST: | UI: | PERF: | SEC:
 
 ---
 
-## 📄 License
+## ![License](https://img.shields.io/badge/-License-10B981?style=for-the-badge&logo=license&logoColor=white)
 
 MIT License — see [LICENSE](LICENSE)
 
@@ -458,7 +460,7 @@ MIT License — see [LICENSE](LICENSE)
 
 <div align="center">
 
-**Built with ❤️ using Go · React · OpenTelemetry · SigNoz**
+**Built with Go · React · OpenTelemetry · SigNoz**
 
 *"Your observability system deserves to be observed."*
 
