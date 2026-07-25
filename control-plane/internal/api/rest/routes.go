@@ -65,5 +65,10 @@ func (s *Server) routes() *chi.Mux {
 		r.Get("/root-cause", s.GetRootCause)
 	})
 
+	// Interactive Telemetry Terminal endpoints
+	r.Post("/api/v1/analyze", s.AnalyzeTarget)
+	r.Get("/api/v1/analysis/{job_id}/logs", s.StreamAnalysisLogs)
+	r.Get("/api/v1/analysis/{job_id}", s.GetAnalysisResult)
+
 	return r
 }

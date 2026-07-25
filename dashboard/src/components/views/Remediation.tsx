@@ -136,7 +136,7 @@ function RemediationCard({
           <button
             className="btn"
             title="Open a PR on GitHub with this configuration"
-            onClick={() => window.open('https://github.com/frag2win/TelemetryHealth/new/main?filename=remediation.yaml&value=' + encodeURIComponent(code), '_blank')}
+            onClick={() => window.open('https://github.com/CyberCodezilla/Telemetry_Health_SIGNOZ/new/main?filename=remediation.yaml&value=' + encodeURIComponent(code), '_blank')}
           >
             <ExternalLink size={12} />
             <span>PR</span>

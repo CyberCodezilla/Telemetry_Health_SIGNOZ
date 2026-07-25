@@ -39,3 +39,12 @@ dashboard/.env.production.local
 .docker/
 docker-compose.override.yml
 .gocache/
+
+# Credentials
+*.pem
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup

@@ -116,6 +116,7 @@ function App() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
 
   // Sync theme with document class list and localStorage
   useEffect(() => {
@@ -239,7 +240,8 @@ function App() {
     const score = updated.healthScore ?? 78;
     
     if (range === '1h') {
-      updated.history = [score - 4, score - 8, score - 6, score - 3, score - 1, score + 2, score - 2, score];
+      updated.healthScore = Math.max(0, score - 8);
+      updated.history = [score - 4, score - 8, score - 6, score - 3, score - 1, score + 2, score - 2, updated.healthScore];
       if (updated.metrics.cardinality) {
         updated.metrics.cardinality.value = '1.1M';
         updated.metrics.cardinality.change = 4.2;
@@ -249,9 +251,11 @@ function App() {
         updated.metrics.orphans.change = 2.4;
       }
     } else if (range === '6h') {
-      updated.history = [score - 10, score - 7, score - 9, score - 5, score - 4, score - 2, score - 3, score];
+      updated.healthScore = score;
+      updated.history = [score - 10, score - 7, score - 9, score - 5, score - 4, score - 2, score - 3, updated.healthScore];
     } else if (range === '24h') {
-      updated.history = [score - 15, score - 12, score - 14, score - 10, score - 8, score - 5, score - 6, score];
+      updated.healthScore = Math.min(100, score + 4);
+      updated.history = [score - 15, score - 12, score - 14, score - 10, score - 8, score - 5, score - 6, updated.healthScore];
       if (updated.metrics.cardinality) {
         updated.metrics.cardinality.value = '1.4M';
         updated.metrics.cardinality.change = -2.1;
@@ -261,7 +265,8 @@ function App() {
         updated.metrics.orphans.change = -1.2;
       }
     } else if (range === '7d') {
-      updated.history = [score - 22, score - 18, score - 20, score - 14, score - 12, score - 9, score - 7, score];
+      updated.healthScore = Math.min(100, score + 12);
+      updated.history = [score - 22, score - 18, score - 20, score - 14, score - 12, score - 9, score - 7, updated.healthScore];
       if (updated.metrics.cardinality) {
         updated.metrics.cardinality.value = '2.1M';
         updated.metrics.cardinality.change = -8.5;
@@ -309,6 +314,17 @@ function App() {
       setLoading(false);
     }
   };
+
+  const handleAnalysisComplete = useCallback(() => {
+    setIsAnalyzed(true);
+    fetchWithAbort();
+  }, [fetchWithAbort]);
+
+  const computedData = data ? { 
+    ...data, 
+    healthScore: isAnalyzed ? data.healthScore : 0, 
+    history: isAnalyzed ? data.history : [0, 0, 0, 0, 0, 0, 0, 0] 
+  } : null;
 
   return (
     <>
@@ -478,11 +494,11 @@ function App() {
 
         {/* Primary Content Window */}
         <div className="content">
-          {loading && !data ? (
+          {loading && !computedData ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh', color: 'var(--muted)' }}>
               <RotateCw size={36} className="spinning" />
             </div>
-          ) : !data ? (
+          ) : !computedData ? (
             <div style={{ padding: '40px', textAlign: 'center', border: '1px dashed var(--bezel)', borderRadius: '6px', color: 'var(--muted)' }}>
               No telemetry data yet — start your OTel Collector to see health metrics
             </div>
@@ -491,28 +507,33 @@ function App() {
               {activeView === 'overview' && (
                 <ErrorBoundary local>
                   {/* IMPL-2: Show AlertFiredBanner when health score < 50 */}
-                  <AlertFiredBanner healthScore={data.healthScore} tenantId={selectedTenantId} />
-                  <Overview data={data} setView={setActiveView} tenantId={selectedTenantId} />
+                  {isAnalyzed && <AlertFiredBanner healthScore={computedData.healthScore} tenantId={selectedTenantId} />}
+                  <Overview
+                    data={computedData}
+                    setView={setActiveView}
+                    tenantId={selectedTenantId}
+                    onAnalysisComplete={handleAnalysisComplete}
+                  />
                 </ErrorBoundary>
               )}
               {activeView === 'cardinality' && (
                 <ErrorBoundary local>
-                  <Cardinality data={data} tenantId={selectedTenantId} />
+                  <Cardinality data={computedData} tenantId={selectedTenantId} />
                 </ErrorBoundary>
               )}
               {activeView === 'tracechains' && (
                 <ErrorBoundary local>
-                  <TraceChains data={data} tenantId={selectedTenantId} />
+                  <TraceChains data={computedData} tenantId={selectedTenantId} />
                 </ErrorBoundary>
               )}
               {activeView === 'coverage' && (
                 <ErrorBoundary local>
-                  <Coverage data={data} tenantId={selectedTenantId} />
+                  <Coverage data={computedData} tenantId={selectedTenantId} />
                 </ErrorBoundary>
               )}
               {activeView === 'remediation' && (
                 <ErrorBoundary local>
-                  <Remediation apiRemediation={data.remediation} tenantId={selectedTenantId} />
+                  <Remediation apiRemediation={computedData.remediation} tenantId={selectedTenantId} />
                 </ErrorBoundary>
               )}
               {activeView === 'agenttraces' && (

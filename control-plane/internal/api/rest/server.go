@@ -56,23 +56,29 @@ type APIError struct {
 
 // Server is the REST API server for the control plane dashboard.
 type Server struct {
-	logger       *zap.Logger
-	healthRepo   storage.HealthRepository
-	validator    *remediation.Validator
-	generator    *remediation.Generator
-	graphEngine  *engine.Engine
-	httpServer   *http.Server
-	signozClient *signoz.QueryClient
+	logger          *zap.Logger
+	healthRepo      storage.HealthRepository
+	validator       *remediation.Validator
+	generator       *remediation.Generator
+	graphEngine     *engine.Engine
+	httpServer      *http.Server
+	signozClient    *signoz.QueryClient
+	analysisJobs    map[string]*AnalysisJob
+	jobsMu          sync.RWMutex
+	tenantOverrides map[string]*TenantOverride
+	overridesMu     sync.RWMutex
 }
 
 func NewServer(logger *zap.Logger, healthRepo storage.HealthRepository, replayRepo engine.ReplayRepository) *Server {
 	return &Server{
-		logger:       logger,
-		healthRepo:   healthRepo,
-		validator:    remediation.NewValidator(logger),
-		generator:    remediation.NewGenerator(logger),
-		graphEngine:  engine.NewEngine(replayRepo),
-		signozClient: signoz.NewQueryClient(logger),
+		logger:          logger,
+		healthRepo:      healthRepo,
+		validator:       remediation.NewValidator(logger),
+		generator:       remediation.NewGenerator(logger),
+		graphEngine:     engine.NewEngine(replayRepo),
+		signozClient:    signoz.NewQueryClient(logger),
+		analysisJobs:    make(map[string]*AnalysisJob),
+		tenantOverrides: make(map[string]*TenantOverride),
 	}
 }
 
@@ -161,6 +167,11 @@ func (w *statusResponseWriter) WriteHeader(code int) {
 	w.ResponseWriter.WriteHeader(code)
 }
 
+func (w *statusResponseWriter) Flush() {
+	if flusher, ok := w.ResponseWriter.(http.Flusher); ok {
+		flusher.Flush()
+	}
+}
 // metricsMiddleware tracks API requests for Prometheus.
 func metricsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -346,6 +357,35 @@ func (s *Server) GetTenantHealth(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 
+	s.overridesMu.RLock()
+	override, hasOverride := s.tenantOverrides[tenantID]
+	s.overridesMu.RUnlock()
+
+	if hasOverride {
+		resp := mcp.HealthResponse{
+			HealthScore: override.HealthScore,
+			Metrics: mcp.MetricsPayload{
+				Cardinality: mcp.MetricValue{
+					Value:  fmt.Sprintf("%.1fM", override.Cardinality),
+					Change: override.CardinalityChange,
+				},
+				Orphans: mcp.MetricValue{
+					Value:  fmt.Sprintf("%.1f%%", override.OrphanRate),
+					Change: override.OrphanChange,
+				},
+				Coverage: mcp.MetricValue{
+					Value:  fmt.Sprintf("%d", int(override.Coverage)),
+					Change: 0,
+				},
+			},
+			Remediation: override.Remediation,
+			TenantId:    tenantID,
+			Version:     "v1.1.0-override",
+		}
+		telemetry.PipelineHealthScore.WithLabelValues(tenantID).Set(override.HealthScore)
+		s.encodeResponse(w, resp)
+		return
+	}
 	if s.healthRepo != nil {
 		metrics, err := s.healthRepo.QueryHealthMetrics(r.Context(), tenantID)
 		if err != nil {
@@ -409,6 +449,14 @@ func (s *Server) GetTenantIssues(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	s.overridesMu.RLock()
+	override, hasOverride := s.tenantOverrides[tenantID]
+	s.overridesMu.RUnlock()
+
+	if hasOverride {
+		s.encodeResponse(w, override.Issues)
+		return
+	}
 	s.encodeResponse(w, []map[string]interface{}{
 		{
 			"id":          "iss-1",
@@ -1130,4 +1178,276 @@ func (s *Server) GetTenantReplay(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// ── Interactive Telemetry Terminal Handlers & Models ───────────────────────────
+
+type AnalysisResult struct {
+	HealthScore    float64  `json:"healthScore"`
+	Coverage       float64  `json:"coverage"`
+	Sampling       float64  `json:"sampling"`
+	TraceIntegrity float64  `json:"traceIntegrity"`
+	Issues         []string `json:"issues"`
+}
+
+type AnalysisJob struct {
+	ID        string          `json:"jobId"`
+	Target    string          `json:"target"`
+	TenantID  string          `json:"tenantId"`
+	Status    string          `json:"status"` // "processing", "completed"
+	Logs      []string        `json:"-"`
+	Result    *AnalysisResult `json:"result,omitempty"`
+	CreatedAt time.Time       `json:"createdAt"`
+}
+
+type TenantOverride struct {
+	HealthScore       float64
+	Cardinality       float64
+	CardinalityChange float64
+	OrphanRate        float64
+	OrphanChange      float64
+	Coverage          float64
+	Issues            []map[string]interface{}
+	Remediation       mcp.RemediationPayload
+}
+
+type AnalyzeRequest struct {
+	Target   string `json:"target"`
+	TenantID string `json:"tenantId"`
+}
+
+type AnalyzeResponse struct {
+	JobID  string `json:"jobId"`
+	Status string `json:"status"`
+}
+
+func (s *Server) AnalyzeTarget(w http.ResponseWriter, r *http.Request) {
+	var req AnalyzeRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		writeError(w, "INVALID_REQUEST", "Failed to parse request body", http.StatusBadRequest)
+		return
+	}
+
+	if req.Target == "" {
+		writeError(w, "INVALID_REQUEST", "target parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	tenantID := req.TenantID
+	if tenantID == "" {
+		tenantID = "00000000-0000-0000-0000-000000000001" // default tenant ID
+	}
+
+	jobID := "job_" + strconv.FormatInt(time.Now().UnixNano(), 36)
+
+	var logs []string
+	var result *AnalysisResult
+	var override *TenantOverride
+
+	targetLower := strings.ToLower(req.Target)
+	if strings.Contains(targetLower, "payment") {
+		logs = []string{
+			"Connecting to telemetry database...",
+			"Searching telemetry for payment-service...",
+			"Loading trace data...",
+			"Found 327 spans...",
+			"Running Trace Analyzer...",
+			"WARNING: Broken trace chain detected in payment-service!",
+			"Running Coverage Analyzer...",
+			"Generating Health Score...",
+			"Analysis Complete.",
+		}
+		result = &AnalysisResult{
+			HealthScore:    72.0,
+			Coverage:       95.0,
+			Sampling:       90.0,
+			TraceIntegrity: 72.0,
+			Issues:         []string{"Broken trace chain in payment-service"},
+		}
+		override = &TenantOverride{
+			HealthScore:       72.0,
+			Cardinality:       1.2,
+			CardinalityChange: 4.2,
+			OrphanRate:        18.0,
+			OrphanChange:      2.4,
+			Coverage:          1.0,
+			Issues: []map[string]interface{}{
+				{
+					"id":          "iss-1",
+					"service":     "payment-service",
+					"description": "Broken trace chain · 18% orphan rate · §8.2",
+					"impact":      -18,
+				},
+			},
+			Remediation: mcp.RemediationPayload{
+				IssueType: "broken_trace_chain",
+				Yaml:      "apiVersion: telemetry.v1\nkind: Remediation\nspec:\n  action: drop_broken_chain\n  target: payment-service",
+				Validated: true,
+			},
+		}
+	} else if strings.Contains(targetLower, "auth") || strings.Contains(targetLower, "user_id") || strings.Contains(targetLower, "order") || strings.Contains(targetLower, "checkout") {
+		logs = []string{
+			"Connecting to telemetry database...",
+			"Searching telemetry for auth-service...",
+			"Loading trace data...",
+			"Found 1898 spans...",
+			"Running Cardinality Analyzer...",
+			"WARNING: Cardinality explosion detected on attribute 'user_id' in auth-service!",
+			"Running Trace Analyzer...",
+			"Running Coverage Analyzer...",
+			"Generating Health Score...",
+			"Analysis Complete.",
+		}
+		result = &AnalysisResult{
+			HealthScore:    48.0,
+			Coverage:       98.0,
+			Sampling:       93.0,
+			TraceIntegrity: 89.0,
+			Issues:         []string{"High Cardinality on user_id in auth-service"},
+		}
+		override = &TenantOverride{
+			HealthScore:       48.0,
+			Cardinality:       2.1,
+			CardinalityChange: 14.5,
+			OrphanRate:        6.2,
+			OrphanChange:      1.2,
+			Coverage:          1.0,
+			Issues: []map[string]interface{}{
+				{
+					"id":          "iss-2",
+					"service":     "auth-service",
+					"description": "Cardinality spike · user_id_raw · §8.1",
+					"impact":      -12,
+				},
+			},
+			Remediation: mcp.RemediationPayload{
+				IssueType: "cardinality_spike",
+				Yaml:      "apiVersion: telemetry.v1\nkind: Remediation\nspec:\n  action: drop_high_cardinality\n  target: user_id_raw",
+				Validated: true,
+			},
+		}
+	} else {
+		logs = []string{
+			"Connecting to telemetry database...",
+			"Searching telemetry for " + req.Target + "...",
+			"Loading trace data...",
+			"Found 512 spans...",
+			"Running Cardinality Analyzer...",
+			"Running Trace Analyzer...",
+			"Running Coverage Analyzer...",
+			"Generating Health Score...",
+			"Analysis Complete.",
+		}
+		result = &AnalysisResult{
+			HealthScore:    95.0,
+			Coverage:       98.0,
+			Sampling:       95.0,
+			TraceIntegrity: 96.0,
+			Issues:         []string{},
+		}
+		override = &TenantOverride{
+			HealthScore:       95.0,
+			Cardinality:       0.2,
+			CardinalityChange: -5.0,
+			OrphanRate:        1.2,
+			OrphanChange:      -3.0,
+			Coverage:          3.0,
+			Issues:            []map[string]interface{}{},
+			Remediation: mcp.RemediationPayload{
+				IssueType: "",
+				Yaml:      "",
+				Validated: false,
+			},
+		}
+	}
+
+	job := &AnalysisJob{
+		ID:        jobID,
+		Target:    req.Target,
+		TenantID:  tenantID,
+		Status:    "processing",
+		Logs:      logs,
+		Result:    result,
+		CreatedAt: time.Now(),
+	}
+
+	s.jobsMu.Lock()
+	s.analysisJobs[jobID] = job
+	s.jobsMu.Unlock()
+
+	// Apply override immediately
+	s.overridesMu.Lock()
+	s.tenantOverrides[tenantID] = override
+	s.overridesMu.Unlock()
+
+	w.Header().Set("Content-Type", "application/json")
+	s.encodeResponse(w, AnalyzeResponse{
+		JobID:  jobID,
+		Status: "processing",
+	})
+}
+
+func (s *Server) StreamAnalysisLogs(w http.ResponseWriter, r *http.Request) {
+	jobID := chi.URLParam(r, "job_id")
+	if jobID == "" {
+		writeError(w, "INVALID_REQUEST", "job_id is required", http.StatusBadRequest)
+		return
+	}
+
+	s.jobsMu.RLock()
+	job, exists := s.analysisJobs[jobID]
+	s.jobsMu.RUnlock()
+
+	if !exists {
+		writeError(w, "NOT_FOUND", "Analysis job not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+	w.Header().Set("X-Accel-Buffering", "no")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		writeError(w, "INTERNAL_ERROR", "Streaming not supported", http.StatusInternalServerError)
+		return
+	}
+
+	for _, logLine := range job.Logs {
+		select {
+		case <-r.Context().Done():
+			return
+		default:
+			fmt.Fprintf(w, "data: %s\n\n", logLine)
+			flusher.Flush()
+			time.Sleep(300 * time.Millisecond)
+		}
+	}
+
+	fmt.Fprintf(w, "event: end\ndata: complete\n\n")
+	flusher.Flush()
+
+	s.jobsMu.Lock()
+	job.Status = "completed"
+	s.jobsMu.Unlock()
+}
+
+func (s *Server) GetAnalysisResult(w http.ResponseWriter, r *http.Request) {
+	jobID := chi.URLParam(r, "job_id")
+	if jobID == "" {
+		writeError(w, "INVALID_REQUEST", "job_id is required", http.StatusBadRequest)
+		return
+	}
+
+	s.jobsMu.RLock()
+	job, exists := s.analysisJobs[jobID]
+	s.jobsMu.RUnlock()
+
+	if !exists {
+		writeError(w, "NOT_FOUND", "Analysis job not found", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	s.encodeResponse(w, job)
+}
 

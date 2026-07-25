@@ -310,7 +310,16 @@ telemetryhealth/
 ├── .github/workflows/
 │   ├── ci.yml
 │   ├── release.yml
-│   └── security-scan.yml
+│   ├── security-scan.yml
+│   └── docs-bot.yml                    # runs after ci.yml succeeds — see §15
+│
+├── tools/
+│   └── docs-bot/                       # standalone Go binary, see §15.4
+│       ├── main.go
+│       ├── changelog.go
+│       ├── commitlog.go
+│       └── docs-bot_test.go
+
 │
 └── ops/
     ├── slo-definitions.yaml
@@ -537,6 +546,68 @@ The AI agent and the GitHub bot (§15) jointly maintain `app/DOCS/`:
   - `TEST`, `CHORE` → `### Internal` (not customer-facing, kept for audit trail per §10 SOC 2 requirement)
 - **`Build_Issue_Report.md`** — any `BUG` commit whose body or diff touches CI config, `Dockerfile`, `go.mod`/`go.sum`, or Helm/Terraform files gets a corresponding entry here, distinct from ordinary application bugs, since these map to the "Demo fails live" / infra-risk category in §12.
 - **`Implementation_Status.md`** — the canonical cross-reference between PRD §8 functional requirements and actual shipped code; the agent updates the row for a feature the same commit that completes it, not in a later cleanup pass.
+
+---
+
+## 15. GitHub Documentation Bot (Live Tracking)
+
+### 16.1 Purpose
+
+A GitHub Action that keeps `app/DOCS/` continuously accurate without relying on humans or agents remembering to update it by hand, and that produces an **immutable, append-only log of every commit that passed CI on `main`** — this is the "live tracking folder" referenced in onboarding and audit reviews.
+
+### 16.2 Trigger & Guarantee
+
+- Workflow: `.github/workflows/docs-bot.yml`.
+- Trigger: `workflow_run` on completion of `ci.yml` targeting `main`, filtered to `conclusion == 'success'`. This is the key production hardening vs. a naive "on every push" bot: **a commit is only logged once CI has actually passed**, not merely once it's been pushed. A commit that fails CI never gets a changelog or status-tracker entry, and is instead surfaced as a failed check on the PR.
+- If `ci.yml` fails, the bot takes no documentation action — failing builds must not pollute the live tracking folder or the changelog.
+
+### 16.3 What It Does, Per Passing Commit
+
+1. Parses the commit message prefix (§14.1) via regex (`^(FEATURE|BUG|UI|PERF|SEC|DOCS|REFACTOR|TEST|CHORE):`). Commits that don't match are flagged as a required-format failure on the PR (enforced at PR-open time by a separate commit-lint step, not just at merge time).
+2. Appends a dated entry to `app/DOCS/CHANGELOG.md` under the mapped heading (§14.3).
+3. Appends an entry to `app/DOCS/commit-log/YYYY-MM-DD.md` (created if it doesn't exist for that day) containing: commit SHA, author, prefix/category, one-line description, PR number, and CI run link. This file is never edited or rewritten after creation — only appended to — so it functions as an audit trail.
+4. If the commit is prefixed `BUG` and its diff touches CI/build/infra files (per §14.3), also appends to `app/DOCS/Build_Issue_Report.md`.
+5. If the commit body contains a `Closes-PRD-Section: §X.Y` trailer, updates the corresponding row in `Implementation_Status.md` to mark that section complete and links the commit SHA as evidence.
+6. Commits the documentation changes back to `main` as a single bot commit tagged `DOCS: automated changelog/status update for {sha}`, authored by a dedicated `telemetryhealth-docs-bot` machine account (not a personal token), so these commits are clearly distinguishable in `git blame` / audit review from human or agent-authored changes.
+
+### 16.4 Example Workflow Skeleton
+
+```yaml
+name: docs-bot
+on:
+  workflow_run:
+    workflows: ["ci"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  update-docs:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.DOCS_BOT_TOKEN }}
+
+      - name: Parse commit + update docs
+        run: go run ./tools/docs-bot --sha ${{ github.event.workflow_run.head_sha }}
+
+      - name: Commit changes
+        run: |
+          git config user.name "telemetryhealth-docs-bot"
+          git config user.email "docs-bot@telemetryhealth.internal"
+          git add app/DOCS
+          git commit -m "DOCS: automated changelog/status update for ${{ github.event.workflow_run.head_sha }}" || echo "no changes"
+          git push
+```
+
+The `tools/docs-bot` Go program (lives under `telemetryhealth/tools/docs-bot/`, added to the file structure in §7) is intentionally a small, testable, standalone binary rather than inline shell/YAML scripting, so its changelog-mapping and section-linking logic can be unit tested like any other component in this repo — consistent with the ≥90% coverage bar in §10.
+
+### 16.5 Failure Handling
+
+- If the bot's own commit-back step fails (e.g., branch protection conflict, concurrent push), the workflow retries once with a rebase, then opens an issue tagged `CHORE` rather than silently dropping the update — a docs-bot failure must never be a silent gap in the audit trail.
+- The bot never force-pushes and never rewrites history in `commit-log/`; only new files/appends are permitted, enforced by the bot's own logic and a branch-protection rule that blocks force-pushes to `main`.
 
 ---
 

@@ -1,30 +1,33 @@
-version: 1
-name: telemetryhealth-signoz
-target: kubernetes
-flavor: kustomize
-variables:
-  signoz:
-    version: "0.112.0"
-  clickhouse:
-    mode: single-node
-  pipeline:
-    receivers:
-      otlp:
-        enabled: true
-    processors:
-      telemetryhealth:
-        enabled: true
-    exporters:
-      signoz:
-        dashboard_path: "./dashboard/signoz-dashboard.json"
-        alerts_path: "./alerts/telemetry-health-alerts.yaml"
-  mcp_tools:
-    server: "stitch"
-    enabled: true
-    tools:
-      - "create_project"
-      - "get_project"
-      - "list_projects"
-      - "list_screens"
-      - "get_screen"
-
+apiVersion: v1alpha1
+kind: Installation
+metadata:
+  name: telemetryhealth-signoz
+spec:
+  deployment:
+    mode: kubernetes
+    flavor: kustomize
+  variables:
+    signoz:
+      version: "0.112.0"
+    clickhouse:
+      mode: single-node
+    pipeline:
+      receivers:
+        otlp:
+          enabled: true
+      processors:
+        telemetryhealth:
+          enabled: true
+      exporters:
+        signoz:
+          dashboard_path: "./dashboard/signoz-dashboard.json"
+          alerts_path: "./alerts/telemetry-health-alerts.yaml"
+    mcp_tools:
+      server: "stitch"
+      enabled: true
+      tools:
+        - "create_project"
+        - "get_project"
+        - "list_projects"
+        - "list_screens"
+        - "get_screen"

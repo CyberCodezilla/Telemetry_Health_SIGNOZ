@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowDownRight, AlertTriangle, Database, Activity, Clock,
 import { Metric, useTenantData, ErrorBanner, SkeletonLoader } from '../Shared';
 import { RootCauseGraph } from './RootCauseGraph';
 import type { DashboardData } from '../../App';
+import { TelemetryTerminal } from './TelemetryTerminal';
 
 interface AnimatedHealthGaugeProps {
   score: number;
@@ -94,9 +95,10 @@ interface OverviewProps {
   data: DashboardData;
   setView: (v: string) => void;
   tenantId: string;
+  onAnalysisComplete?: () => void;
 }
 
-export function Overview({ data, setView, tenantId }: OverviewProps) {
+export function Overview({ data, setView, tenantId, onAnalysisComplete }: OverviewProps) {
   const [activeDrilldown, setActiveDrilldown] = useState<string | null>(null);
   const [expandedIssue, setExpandedIssue] = useState<string | null>(null);
 
@@ -205,6 +207,13 @@ export function Overview({ data, setView, tenantId }: OverviewProps) {
         </div>
       </div>
 
+      {/* Interactive Telemetry Terminal Component */}
+      <div style={{ marginBottom: '16px' }}>
+        <TelemetryTerminal
+          tenantId={tenantId}
+          onAnalysisComplete={onAnalysisComplete ? onAnalysisComplete : () => {}}
+        />
+      </div>
       {/* Grid containing metric cards reusing Shared component */}
       <div className="grid4">
         <Metric
