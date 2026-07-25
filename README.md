@@ -1,6 +1,6 @@
 <div align="center">
 
-# TelemetryHealth
+# <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/activity.svg" width="36" height="36" /> TelemetryHealth
 
 ### *Observe Your Observability — Before Your Users Notice*
 
@@ -10,8 +10,8 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)](https://react.dev)
 [![OpenTelemetry](https://img.shields.io/badge/OpenTelemetry-Collector-orange?style=flat-square&logo=opentelemetry)](https://opentelemetry.io)
 [![SigNoz](https://img.shields.io/badge/SigNoz-Integrated-FF6B35?style=flat-square)](https://signoz.io)
-[![License](https://img.shields.io/badge/License-MIT-10B981?style=flat-square)](LICENSE)
-[![Hackathon](https://img.shields.io/badge/SigNoz%20Hackathon-Track%2002-7C3AED?style=flat-square)](https://wemakedevs.org/hackathons/signoz)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Hackathon](https://img.shields.io/badge/SigNoz%20Hackathon-Track%2002-purple?style=flat-square)](https://wemakedevs.org/hackathons/signoz)
 
 > **Built for the SigNoz Agents of Observability Hackathon · Track 02: Signals & Dashboards · Jul 20–26, 2026**
 
@@ -19,7 +19,7 @@
 
 ---
 
-## ![The Problem](https://img.shields.io/badge/-The_Problem-FF6B35?style=for-the-badge&logo=alert-octagon&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/alert-triangle.svg" width="22" height="22" /> The Problem
 
 You spend weeks setting up OpenTelemetry. You deploy SigNoz. You breathe easy.
 
@@ -33,7 +33,7 @@ Then, three months later:
 
 ---
 
-## ![Solution Overview](https://img.shields.io/badge/-Solution_Overview-00ADD8?style=for-the-badge&logo=lightbulb&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/lightbulb.svg" width="22" height="22" /> Solution Overview
 
 TelemetryHealth is **meta-observability** — it observes your observability.
 
@@ -43,7 +43,7 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## ![Architecture](https://img.shields.io/badge/-Architecture-7C3AED?style=for-the-badge&logo=diagram-next&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/network.svg" width="22" height="22" /> Architecture
 
 <div align="center">
 
@@ -53,7 +53,7 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## ![Key Features](https://img.shields.io/badge/-Key_Features-10B981?style=for-the-badge&logo=star&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/sparkles.svg" width="22" height="22" /> Key Features
 
 | # | Feature | What It Does | Implementation |
 |---|---------|-------------|----------------|
@@ -67,7 +67,7 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## ![SigNoz MCP Server Integration](https://img.shields.io/badge/-SigNoz_MCP_Server_Integration-FF6B35?style=for-the-badge&logo=cpu&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/bot.svg" width="22" height="22" /> SigNoz MCP Server Integration
 
 TelemetryHealth implements a **Model Context Protocol (MCP)** server, natively integrating with SigNoz's AI agent workflows.
 
@@ -90,7 +90,7 @@ This turns TelemetryHealth into an **Autonomous Telemetry Intelligence Platform*
 
 ---
 
-## ![SigNoz Deep Integration](https://img.shields.io/badge/-SigNoz_Deep_Integration-FF6B35?style=for-the-badge&logo=signoz&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/bar-chart-2.svg" width="22" height="22" /> SigNoz Deep Integration
 
 TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + alerting platform**:
 
@@ -103,7 +103,7 @@ TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + aler
 
 ---
 
-## ![Dashboard Views](https://img.shields.io/badge/-Dashboard_Views-61DAFB?style=for-the-badge&logo=react&logoColor=black)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/layout-dashboard.svg" width="22" height="22" /> Dashboard Views
 
 The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
@@ -120,7 +120,7 @@ The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
 ---
 
-## ![Repository Structure](https://img.shields.io/badge/-Repository_Structure-64748B?style=for-the-badge&logo=folder-tree&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/folder-tree.svg" width="22" height="22" /> Repository Structure
 
 ```
 Telemetry_Health_SIGNOZ/
@@ -191,7 +191,7 @@ Telemetry_Health_SIGNOZ/
 
 ---
 
-## ![Getting Started](https://img.shields.io/badge/-Getting_Started-10B981?style=for-the-badge&logo=rocket&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/rocket.svg" width="22" height="22" /> Getting Started
 
 ### Prerequisites
 
@@ -250,7 +250,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## ![API Reference](https://img.shields.io/badge/-API_Reference-00ADD8?style=for-the-badge&logo=openapi-initiative&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/terminal.svg" width="22" height="22" /> API Reference
 
 ### Core Endpoints
 
@@ -314,7 +314,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## ![Security Model](https://img.shields.io/badge/-Security_Model-7C3AED?style=for-the-badge&logo=shield-check&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/shield-check.svg" width="22" height="22" /> Security Model
 
 | Layer | Implementation |
 |-------|---------------|
@@ -329,7 +329,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## ![Test Coverage](https://img.shields.io/badge/-Test_Coverage-10B981?style=for-the-badge&logo=go&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/flask-conical.svg" width="22" height="22" /> Test Coverage
 
 | Package | Coverage | What's Tested |
 |---------|----------|---------------|
@@ -348,7 +348,7 @@ cd ../control-plane && go test ./...
 
 ---
 
-## ![Custom OTel Metrics Emitted](https://img.shields.io/badge/-Custom_OTel_Metrics_Emitted-FF6B35?style=for-the-badge&logo=prometheus&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/gauge.svg" width="22" height="22" /> Custom OTel Metrics Emitted
 
 TelemetryHealth emits the following custom metrics into SigNoz:
 
@@ -373,7 +373,7 @@ TelemetryHealth emits the following custom metrics into SigNoz:
 
 ---
 
-## ![AI Agent Observability](https://img.shields.io/badge/-AI_Agent_Observability-7C3AED?style=for-the-badge&logo=openai&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/brain.svg" width="22" height="22" /> AI Agent Observability (Hackathon Theme)
 
 TelemetryHealth was purpose-built for the **SigNoz Agents of Observability Hackathon**. It provides first-class observability for AI agent workflows instrumented with OpenTelemetry:
 
@@ -394,7 +394,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## ![CI/CD](https://img.shields.io/badge/-CI%2FCD-00ADD8?style=for-the-badge&logo=github-actions&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/git-pull-request.svg" width="22" height="22" /> CI/CD
 
 | Workflow | Trigger | What It Does |
 |----------|---------|---------------|
@@ -404,20 +404,20 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## ![Roadmap](https://img.shields.io/badge/-Roadmap-FF6B35?style=for-the-badge&logo=map&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/map-pin.svg" width="22" height="22" /> Roadmap
 
 | Milestone | Status | Description |
 |---|---|---|
-| M1 — Core Detection (Alpha) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Processor, Circuit Breaker, HLL Cardinality, Orphan Detector |
-| M2 — Control Plane (Beta) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Ingest Gateway, mTLS AuthZ, Stream Jobs, ClickHouse Schema |
-| M3 — Remediation & Hardening (GA) | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Remediation Generator + Validator, SigNoz Bridge, Alert Rules |
-| M4 — Dashboard | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | React UI with 8 views, Health Gauge, Metric Cards, YAML Viewer |
-| M5 — AI Agent Intelligence | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | Behavior/Decision/Root Cause engines, Agent Traces view |
-| M6 — MCP Server | ![Complete](https://img.shields.io/badge/Complete-10B981?style=flat-square) | JSON-RPC 2.0, SSE + stdio modes, SigNoz AI agent integration |
+| M1 — Core Detection (Alpha) | Complete | Processor, Circuit Breaker, HLL Cardinality, Orphan Detector |
+| M2 — Control Plane (Beta) | Complete | Ingest Gateway, mTLS AuthZ, Stream Jobs, ClickHouse Schema |
+| M3 — Remediation & Hardening (GA) | Complete | Remediation Generator + Validator, SigNoz Bridge, Alert Rules |
+| M4 — Dashboard | Complete | React UI with 8 views, Health Gauge, Metric Cards, YAML Viewer |
+| M5 — AI Agent Intelligence | Complete | Behavior/Decision/Root Cause engines, Agent Traces view |
+| M6 — MCP Server | Complete | JSON-RPC 2.0, SSE + stdio modes, SigNoz AI agent integration |
 
 ---
 
-## ![Tech Stack](https://img.shields.io/badge/-Tech_Stack-64748B?style=for-the-badge&logo=stack-overflow&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/cpu.svg" width="22" height="22" /> Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
@@ -431,7 +431,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## ![Documentation](https://img.shields.io/badge/-Documentation-00ADD8?style=for-the-badge&logo=book-open&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/book-open.svg" width="22" height="22" /> Documentation
 
 | Document | Description |
 |---|---|
@@ -442,7 +442,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## ![Contributing](https://img.shields.io/badge/-Contributing-10B981?style=for-the-badge&logo=git&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/users.svg" width="22" height="22" /> Contributing
 
 Contributions welcome! Follow the commit convention in [`AGENT_RULES.md`](./AGENT_RULES.md):
 
@@ -452,7 +452,7 @@ FEATURE: | BUG: | REFACTOR: | DOCS: | TEST: | UI: | PERF: | SEC:
 
 ---
 
-## ![License](https://img.shields.io/badge/-License-10B981?style=for-the-badge&logo=license&logoColor=white)
+## <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/file-text.svg" width="22" height="22" /> License
 
 MIT License — see [LICENSE](LICENSE)
 
