@@ -43,54 +43,11 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## 🏗 Architecture
+<div align="center">
 
-```
-╔══════════════════════════════════════════════════════════════╗
-║                  Your OTel Collector Fleet                   ║
-║  ┌──────────────────────────────────────────────────────┐   ║
-║  │      TelemetryHealth Processor  (Go, OTel SDK)       │   ║
-║  │                                                       │   ║
-║  │  ┌─────────────┐  ┌──────────────┐  ┌────────────┐  │   ║
-║  │  │ Cardinality │  │  TraceChain  │  │  Coverage  │  │   ║
-║  │  │  Tracker    │  │   Detector   │  │  Monitor   │  │   ║
-║  │  │ (HLL/svc)   │  │ (orphan TTL) │  │ (heartbeat)│  │   ║
-║  │  └──────┬──────┘  └──────┬───────┘  └─────┬──────┘  │   ║
-║  │         └────────────────┴────────────────┘          │   ║
-║  │              Fail-Open Circuit Breaker                │   ║
-║  │        [Processor panic? Pipeline keeps flowing]      │   ║
-║  └───────────────────────┬───────────────────────────────┘   ║
-╚══════════════════════════╪═══════════════════════════════════╝
-                           │ gRPC / OTLP  (mTLS + SPIFFE)
-                           ▼
-╔══════════════════════════════════════════════════════════════╗
-║                    Control Plane  (Go)                       ║
-║                                                              ║
-║  ┌──────────────┐  ┌────────────────┐  ┌─────────────────┐  ║
-║  │ Ingest Gtwy  │  │  Stream Jobs   │  │   REST API      │  ║
-║  │ (gRPC/OTLP)  │  │  (HLL Merge    │  │  /api/v1/...    │  ║
-║  │  mTLS AuthZ  │  │   + Scoring)   │  │  Health Score   │  ║
-║  └──────┬───────┘  └───────┬────────┘  └────────┬────────┘  ║
-║         │                  ▼                     │           ║
-║         │         ┌─────────────────┐            │           ║
-║         └────────►│   ClickHouse    │◄───────────┘           ║
-║                   │  (TTL / AggMT)  │                        ║
-║                   └─────────────────┘                        ║
-║                                                              ║
-║  ┌──────────────────────────────────────────────────────┐   ║
-║  │         MCP Server  (SSE + stdio modes)              │   ║
-║  │   GetTelemetryHealth · GenerateRemediation tools     │   ║
-║  └──────────────────────────────────────────────────────┘   ║
-╚══════════════════════════╪═══════════════════════════════════╝
-                           │ REST + WebSocket
-                 ┌─────────┴──────────┐
-                 ▼                    ▼
-  ╔════════════════════════╗   ╔══════════════════╗
-  ║  React Dashboard       ║   ║  SigNoz Platform ║
-  ║  (Vite + TypeScript)   ║   ║  Dashboards &    ║
-  ║  Health Gauge · YAML   ║   ║  Alerts Bridge   ║
-  ╚════════════════════════╝   ╚══════════════════╝
-```
+![TelemetryHealth Architecture Diagram](./architecture.png)
+
+</div>
 
 ---
 
