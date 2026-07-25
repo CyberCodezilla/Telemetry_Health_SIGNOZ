@@ -532,6 +532,7 @@ function App() {
                     data={computedData}
                     setView={setActiveView}
                     tenantId={selectedTenantId}
+                    timeRange={timeRange}
                     onAnalysisComplete={handleAnalysisComplete}
                   />
                 </ErrorBoundary>

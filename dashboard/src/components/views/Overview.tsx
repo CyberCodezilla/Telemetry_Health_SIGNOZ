@@ -95,10 +95,11 @@ interface OverviewProps {
   data: DashboardData;
   setView: (v: string) => void;
   tenantId: string;
+  timeRange?: string;
   onAnalysisComplete?: () => void;
 }
 
-export function Overview({ data, setView, tenantId, onAnalysisComplete }: OverviewProps) {
+export function Overview({ data, setView, tenantId, timeRange = '6h', onAnalysisComplete }: OverviewProps) {
   const [activeDrilldown, setActiveDrilldown] = useState<string | null>(null);
   const [expandedIssue, setExpandedIssue] = useState<string | null>(null);
 
@@ -107,6 +108,22 @@ export function Overview({ data, setView, tenantId, onAnalysisComplete }: Overvi
     { id: 'iss-2', service: 'checkout-service', description: 'Cardinality spike · user_id_raw · §8.1', impact: -12 },
     { id: 'iss-3', service: 'inventory-worker', description: 'Coverage gap · silent 14m · §8.3', impact: -8 }
   ];
+
+  const rangeLabelMap: Record<string, string> = {
+    '1h': '1h ago',
+    '6h': '6h ago',
+    '24h': '24h ago',
+    '7d': '7d ago'
+  };
+  const sparklineTimeLabel = rangeLabelMap[timeRange] || `${timeRange} ago`;
+
+  const deltaPeriodMap: Record<string, string> = {
+    '1h': 'vs last hour',
+    '6h': 'vs last 6 hours',
+    '24h': 'vs yesterday',
+    '7d': 'vs last week'
+  };
+  const deltaPeriodLabel = deltaPeriodMap[timeRange] || 'vs last week';
 
   // useTenantData custom hook safely retrieves dynamic issues utilizing AbortController
   const { data: issues, loading: issuesLoading, error: hasIssuesError, errorMsg: issuesErrorMsg } = useTenantData<IssueItem[]>(
@@ -170,7 +187,7 @@ export function Overview({ data, setView, tenantId, onAnalysisComplete }: Overvi
             </span>
             <div className="score-delta" style={{ justifyContent: 'center', color: delta >= 0 ? 'var(--phosphor)' : 'var(--red)', marginTop: '6px' }}>
               {delta >= 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-              {delta >= 0 ? `+${delta}` : delta} vs last week
+              {delta >= 0 ? `+${delta}` : delta} {deltaPeriodLabel}
             </div>
             <div className="score-caption" style={{ marginTop: '4px' }}>
               composite • ai agents • org rollup
@@ -198,7 +215,7 @@ export function Overview({ data, setView, tenantId, onAnalysisComplete }: Overvi
             <path d={createPath(history)} fill="none" stroke={statusColor} strokeWidth="2.5" />
             <circle cx="640" cy={calcY(history[history.length - 1])} r="5" fill={statusColor} style={{ filter: 'drop-shadow(0 0 4px ' + statusColor + ')' }} />
             <text x="0" y="182" className="trace-text dim">
-              7d ago
+              {sparklineTimeLabel}
             </text>
             <text x="602" y="182" className="trace-text dim">
               now
