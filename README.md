@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./favicon.svg" alt="TelemetryHealth Logo" width="96" height="96" />
+<img src="./favicon.svg" alt="TelemetryHealth Logo" width="96" height="96" style="pointer-events: none;" />
 
 # TelemetryHealth
 
@@ -21,7 +21,7 @@
 
 ---
 
-## <img src="https://api.iconify.design/lucide:list.svg?color=%2300add8" width="26" height="26" /> Table of Contents
+<h2 id="table-of-contents"><img src="https://api.iconify.design/lucide:list.svg?color=%2300add8" width="26" height="26" style="pointer-events: none;" /> Table of Contents</h2>
 
 - [The Problem](#the-problem)
 - [Solution Overview](#solution-overview)
@@ -44,7 +44,7 @@
 
 ---
 
-## <img src="https://api.iconify.design/lucide:alert-triangle.svg?color=%23f95738" width="26" height="26" /> The Problem
+<h2 id="the-problem"><img src="https://api.iconify.design/lucide:alert-triangle.svg?color=%23f95738" width="26" height="26" style="pointer-events: none;" /> The Problem</h2>
 
 You spend weeks setting up OpenTelemetry. You deploy SigNoz. You breathe easy.
 
@@ -58,7 +58,7 @@ Then, three months later:
 
 ---
 
-## <img src="https://api.iconify.design/lucide:lightbulb.svg?color=%2300add8" width="26" height="26" /> Solution Overview
+<h2 id="solution-overview"><img src="https://api.iconify.design/lucide:lightbulb.svg?color=%2300add8" width="26" height="26" style="pointer-events: none;" /> Solution Overview</h2>
 
 TelemetryHealth is **meta-observability** — it observes your observability.
 
@@ -68,17 +68,17 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## <img src="https://api.iconify.design/lucide:network.svg?color=%23a855f7" width="26" height="26" /> Architecture
+<h2 id="architecture"><img src="https://api.iconify.design/lucide:network.svg?color=%23a855f7" width="26" height="26" style="pointer-events: none;" /> Architecture</h2>
 
 <div align="center">
 
-<img src="./architecture.png" alt="TelemetryHealth Architecture Diagram" width="580" />
+<img src="./architecture.png" alt="TelemetryHealth Architecture Diagram" width="580" style="pointer-events: none;" />
 
 </div>
 
 ---
 
-## <img src="https://api.iconify.design/lucide:sparkles.svg?color=%2310b981" width="26" height="26" /> Key Features
+<h2 id="key-features"><img src="https://api.iconify.design/lucide:sparkles.svg?color=%2310b981" width="26" height="26" style="pointer-events: none;" /> Key Features</h2>
 
 | # | Feature | What It Does | Implementation |
 |---|---------|-------------|----------------|
@@ -92,7 +92,7 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 ---
 
-## <img src="https://api.iconify.design/lucide:bot.svg?color=%23ff6b35" width="26" height="26" /> SigNoz MCP Server Integration
+<h2 id="signoz-mcp-server-integration"><img src="https://api.iconify.design/lucide:bot.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> SigNoz MCP Server Integration</h2>
 
 TelemetryHealth implements a **Model Context Protocol (MCP)** server, natively integrating with SigNoz's AI agent workflows.
 
@@ -115,7 +115,7 @@ This turns TelemetryHealth into an **Autonomous Telemetry Intelligence Platform*
 
 ---
 
-## <img src="https://api.iconify.design/lucide:bar-chart-3.svg?color=%23ff6b35" width="26" height="26" /> SigNoz Deep Integration
+<h2 id="signoz-deep-integration"><img src="https://api.iconify.design/lucide:bar-chart-3.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> SigNoz Deep Integration</h2>
 
 TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + alerting platform**:
 
@@ -128,7 +128,7 @@ TelemetryHealth uses SigNoz as both a **data sink** and a **visualization + aler
 
 ---
 
-## <img src="https://api.iconify.design/lucide:layout-dashboard.svg?color=%2361dafb" width="26" height="26" /> Dashboard Views
+<h2 id="dashboard-views"><img src="https://api.iconify.design/lucide:layout-dashboard.svg?color=%2361dafb" width="26" height="26" style="pointer-events: none;" /> Dashboard Views</h2>
 
 The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
@@ -145,7 +145,7 @@ The React dashboard (Vite + TypeScript + React 19) provides 8 dedicated views:
 
 ---
 
-## <img src="https://api.iconify.design/lucide:folder-tree.svg?color=%2394a3b8" width="26" height="26" /> Repository Structure
+<h2 id="repository-structure"><img src="https://api.iconify.design/lucide:folder-tree.svg?color=%2394a3b8" width="26" height="26" style="pointer-events: none;" /> Repository Structure</h2>
 
 ```
 Telemetry_Health_SIGNOZ/
@@ -216,7 +216,7 @@ Telemetry_Health_SIGNOZ/
 
 ---
 
-## <img src="https://api.iconify.design/lucide:rocket.svg?color=%2310b981" width="26" height="26" /> Getting Started
+<h2 id="getting-started"><img src="https://api.iconify.design/lucide:rocket.svg?color=%2310b981" width="26" height="26" style="pointer-events: none;" /> Getting Started</h2>
 
 ### Prerequisites
 
@@ -275,7 +275,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## <img src="https://api.iconify.design/lucide:terminal.svg?color=%2300add8" width="26" height="26" /> API Reference
+<h2 id="api-reference"><img src="https://api.iconify.design/lucide:terminal.svg?color=%2300add8" width="26" height="26" style="pointer-events: none;" /> API Reference</h2>
 
 ### Core Endpoints
 
@@ -339,7 +339,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## <img src="https://api.iconify.design/lucide:shield-check.svg?color=%23a855f7" width="26" height="26" /> Security Model
+<h2 id="security-model"><img src="https://api.iconify.design/lucide:shield-check.svg?color=%23a855f7" width="26" height="26" style="pointer-events: none;" /> Security Model</h2>
 
 | Layer | Implementation |
 |-------|---------------|
@@ -354,7 +354,7 @@ cd control-plane && go test ./... -v
 
 ---
 
-## <img src="https://api.iconify.design/lucide:flask-conical.svg?color=%2310b981" width="26" height="26" /> Test Coverage
+<h2 id="test-coverage"><img src="https://api.iconify.design/lucide:flask-conical.svg?color=%2310b981" width="26" height="26" style="pointer-events: none;" /> Test Coverage</h2>
 
 | Package | Coverage | What's Tested |
 |---------|----------|---------------|
@@ -373,7 +373,7 @@ cd ../control-plane && go test ./...
 
 ---
 
-## <img src="https://api.iconify.design/lucide:gauge.svg?color=%23ff6b35" width="26" height="26" /> Custom OTel Metrics Emitted
+<h2 id="custom-otel-metrics-emitted"><img src="https://api.iconify.design/lucide:gauge.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> Custom OTel Metrics Emitted</h2>
 
 TelemetryHealth emits the following custom metrics into SigNoz:
 
@@ -398,7 +398,7 @@ TelemetryHealth emits the following custom metrics into SigNoz:
 
 ---
 
-## <img src="https://api.iconify.design/lucide:brain.svg?color=%23a855f7" width="26" height="26" /> AI Agent Observability 
+<h2 id="ai-agent-observability"><img src="https://api.iconify.design/lucide:brain.svg?color=%23a855f7" width="26" height="26" style="pointer-events: none;" /> AI Agent Observability (Hackathon Theme)</h2>
 
 TelemetryHealth was purpose-built for the **SigNoz Agents of Observability Hackathon**. It provides first-class observability for AI agent workflows instrumented with OpenTelemetry:
 
@@ -419,7 +419,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:git-pull-request.svg?color=%2300add8" width="26" height="26" /> CI/CD
+<h2 id="cicd"><img src="https://api.iconify.design/lucide:git-pull-request.svg?color=%2300add8" width="26" height="26" style="pointer-events: none;" /> CI/CD</h2>
 
 | Workflow | Trigger | What It Does |
 |----------|---------|---------------|
@@ -429,7 +429,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:map-pin.svg?color=%23ff6b35" width="26" height="26" /> Roadmap
+<h2 id="roadmap"><img src="https://api.iconify.design/lucide:map-pin.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> Roadmap</h2>
 
 | Milestone | Status | Description |
 |---|---|---|
@@ -442,7 +442,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:layers.svg?color=%2394a3b8" width="26" height="26" /> Tech Stack
+<h2 id="tech-stack"><img src="https://api.iconify.design/lucide:layers.svg?color=%2394a3b8" width="26" height="26" style="pointer-events: none;" /> Tech Stack</h2>
 
 | Layer | Technology |
 |-------|-----------|
@@ -456,7 +456,7 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:file-text.svg?color=%2310b981" width="26" height="26" /> License
+<h2 id="license"><img src="https://api.iconify.design/lucide:file-text.svg?color=%2310b981" width="26" height="26" style="pointer-events: none;" /> License</h2>
 
 MIT License — see [LICENSE](LICENSE)
 
