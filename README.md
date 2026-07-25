@@ -433,17 +433,6 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:book-open.svg?color=%2300add8" width="26" height="26" /> Documentation
-
-| Document | Description |
-|---|---|
-| [TelemetryHealth PRD](./app/DOCS/TelemetryHealth_PRD.md) | Product Requirements Document |
-| [Implementation Status](./app/DOCS/Implementation_Status.md) | PRD section completion tracker |
-| [Changelog](./app/DOCS/CHANGELOG.md) | Release history |
-| [Build Issues](./app/DOCS/Build_Issue_Report.md) | Known issues & resolutions |
-
----
-
 ## <img src="https://api.iconify.design/lucide:file-text.svg?color=%2310b981" width="26" height="26" /> License
 
 MIT License — see [LICENSE](LICENSE)
