@@ -507,7 +507,7 @@ function App() {
               {activeView === 'overview' && (
                 <ErrorBoundary local>
                   {/* IMPL-2: Show AlertFiredBanner when health score < 50 */}
-                  <AlertFiredBanner healthScore={computedData.healthScore} tenantId={selectedTenantId} />
+                  {isAnalyzed && <AlertFiredBanner healthScore={computedData.healthScore} tenantId={selectedTenantId} />}
                   <Overview
                     data={computedData}
                     setView={setActiveView}
