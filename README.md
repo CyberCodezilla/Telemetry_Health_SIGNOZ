@@ -49,7 +49,7 @@ It sits *inside* your OTel Collector pipeline as a custom processor, and continu
 
 <div align="center">
 
-<img src="./architecture.png" alt="TelemetryHealth Architecture Diagram" width="750" />
+<img src="./architecture.png" alt="TelemetryHealth Architecture Diagram" width="580" />
 
 </div>
 
