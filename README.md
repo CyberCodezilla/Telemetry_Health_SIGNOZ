@@ -1,6 +1,8 @@
 <div align="center">
 
-# <img src="https://api.iconify.design/lucide:activity.svg?color=%2300add8" width="36" height="36" /> TelemetryHealth
+<img src="./favicon.svg" alt="TelemetryHealth Logo" width="96" height="96" />
+
+# TelemetryHealth
 
 ### *Observe Your Observability — Before Your Users Notice*
 
