@@ -4,6 +4,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
+RUN go mod tidy
 RUN CGO_ENABLED=0 go build -o api-server ./cmd/api-server
 RUN CGO_ENABLED=0 go build -o mcp-server ./cmd/mcp-server
 RUN CGO_ENABLED=0 go build -o ingest-gateway ./cmd/ingest-gateway
