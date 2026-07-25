@@ -444,16 +444,6 @@ See [`sdk-clients/ai-agent-demo/`](./sdk-clients/ai-agent-demo/) for a Python LL
 
 ---
 
-## <img src="https://api.iconify.design/lucide:users.svg?color=%2310b981" width="26" height="26" /> Contributing
-
-Contributions welcome! Follow the commit convention in [`AGENT_RULES.md`](./AGENT_RULES.md):
-
-```
-FEATURE: | BUG: | REFACTOR: | DOCS: | TEST: | UI: | PERF: | SEC:
-```
-
----
-
 ## <img src="https://api.iconify.design/lucide:file-text.svg?color=%2310b981" width="26" height="26" /> License
 
 MIT License — see [LICENSE](LICENSE)
