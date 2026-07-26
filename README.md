@@ -21,7 +21,26 @@
 
 ---
 
+<div align="center">
+
+<h2 id="live-demo--video-walkthrough"><img src="https://api.iconify.design/lucide:play-circle.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> Live Demo & Video Walkthrough</h2>
+
+<video
+  src="https://github.com/user-attachments/assets/af67f067-0f4d-4c7a-8902-a19d9eb0b1b6"
+  controls
+  preload="none"
+  width="680"
+  height="383"
+  style="max-width: 100%; border-radius: 12px; display: block; margin: 0 auto;">
+</video>
+
+</div>
+
+---
+
 <h2 id="table-of-contents"><img src="https://api.iconify.design/lucide:list.svg?color=%2300add8" width="26" height="26" style="pointer-events: none;" /> Table of Contents</h2>
+
+- [Live Demo & Video Walkthrough](#live-demo--video-walkthrough)
 
 - [The Problem](#the-problem)
 - [Solution Overview](#solution-overview)
