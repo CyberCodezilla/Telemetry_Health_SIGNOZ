@@ -26,7 +26,7 @@
 <h2 id="live-demo--video-walkthrough"><img src="https://api.iconify.design/lucide:play-circle.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> Live Demo & Video Walkthrough</h2>
 
 <video
-  src="https://raw.githubusercontent.com/CyberCodezilla/Telemetry_Health_SIGNOZ/main/assets/demo.mp4"
+  src="assets/demo.mp4"
   controls
   preload="metadata"
   width="680"
