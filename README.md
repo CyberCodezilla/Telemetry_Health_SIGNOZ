@@ -26,7 +26,7 @@
 <h2 id="live-demo--video-walkthrough"><img src="https://api.iconify.design/lucide:play-circle.svg?color=%23ff6b35" width="26" height="26" style="pointer-events: none;" /> Live Demo & Video Walkthrough</h2>
 
 <video
-  src="assets/demo.mp4"
+  src="https://github.com/user-attachments/assets/af67f067-0f4d-4c7a-8902-a19d9eb0b1b6"
   controls
   preload="metadata"
   width="680"
